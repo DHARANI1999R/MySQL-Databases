@@ -1,0 +1,233 @@
+
+mysql> select * from employees;
++-------------+-------------+-----------+----------+--------------+------------+------------+--------+----------------+------------+---------------+
+| employee_id | first_name  | last_name | email    | phone_number | hire_date  | job_id     | salary | commission_pct | manager_id | department_id |
++-------------+-------------+-----------+----------+--------------+------------+------------+--------+----------------+------------+---------------+
+|         100 | Steven      | King      | @SKING   | 515.123.4567 | 2003-06-17 | AD_PRES    |  24000 |              0 |          0 |            90 |
+|         101 | Dinesh      | Kumar     | @DKUMAR  | 515.123.4568 | 2005-09-21 | AD_VP      |  17000 |              0 |        100 |            90 |
+|         103 | David       | Raj       | @DAVRAJ  | 515.123.4569 | 2001-01-13 | IT_PROG    |  25000 |              0 |        102 |            60 |
+|         104 | Ragu        | Prasad    | @RAGU123 | 515.123.4570 | 2007-02-07 | IT_PROG    |  48000 |              0 |        103 |            60 |
+|         108 | Nancy       | Greenberg | NGREENBE | 515.124.4569 | 1987-06-25 | FI_MGR     |  12000 |              0 |        101 |           100 |
+|         109 | Daniel      | Faviet    | DFAVIET  | 515.124.4169 | 1987-06-26 | FI_ACCOUNT |   9000 |              0 |        108 |           100 |
+|         114 | Den         | Raphaely  | DRAPHAEL | 515.127.4561 | 1987-07-01 | PU_MAN     |  11000 |              0 |        100 |            30 |
+|         115 | Alexander   | khoo      | AKHOO    | 515.127.4562 | 1987-07-02 | PU_CLERK   |   3100 |              0 |        114 |            30 |
+|         116 | Shelli      | Baida     | SBAIDA   | 515.127.4563 | 1987-07-03 | PU_CLERK   |   2900 |              0 |        114 |            30 |
+|         120 | Matthew     | Weiss     | MWEISS   | 650-123-1234 | 1987-07-07 | ST_MAN     |   8000 |              0 |        100 |            50 |
+|         121 | Christopher | Olsen     | COLSEN   | 011.44.1344  | 1987-08-09 | SA_REP     |   8000 |            0.2 |        145 |            80 |
+|         150 | Bruce       | Ernst     | BERNST   | 590.423.4568 | 1987-06-21 | IT_PROG    |   6000 |              0 |        103 |            60 |
+|         195 | Vance       | Jones     | VJONES   | 650.501.4876 | 1987-09-20 | SH_CLERK   |   2800 |              0 |        123 |            50 |
+|         200 | Jennifer    | Scott     | JSCOTT   | 515.123.4444 | 1987-09-25 | AD_ASST    |   4400 |              0 |        101 |            10 |
+|         203 | Susan       | Ford      | SFORD    | 515.123.7777 | 1987-09-28 | HR_REP     |   6500 |              0 |        101 |            40 |
+|         206 | William     | Blake     | WBLAKE   | 515.123.8181 | 1987-10-01 | AC_ACCOUNT |   8300 |              0 |        205 |           110 |
++-------------+-------------+-----------+----------+--------------+------------+------------+--------+----------------+------------+---------------+
+
+
+mysql> SELECT COUNT(DISTINCT job_id)
+    -> FROM employees;
++------------------------+
+| COUNT(DISTINCT job_id) |
++------------------------+
+|                     13 |
++------------------------+
+
+
+
+mysql> SELECT SUM(salary)
+    -> FROM employees;
++-------------+
+| SUM(salary) |
++-------------+
+|      196000 |
++-------------+
+
+
+
+mysql> SELECT MIN(salary)
+    -> FROM employees;
++-------------+
+| MIN(salary) |
++-------------+
+|        2800 |
++-------------+
+
+
+mysql> SELECT MAX(salary)
+    -> FROM employees
+    -> WHERE job_id = 'IT_PROG';
++-------------+
+| MAX(salary) |
++-------------+
+|       48000 |
++-------------+
+
+
+
+mysql> SELECT AVG(salary),count(*)
+    -> FROM employees
+    -> WHERE department_id = 90;
++-------------+----------+
+| AVG(salary) | count(*) |
++-------------+----------+
+|       20500 |        2 |
++-------------+----------+
+
+
+
+ mysql> SELECT ROUND(MAX(salary),0) 'Maximum',
+    ->      ROUND(MIN(salary),0) 'Minimum',
+    ->      ROUND(SUM(salary),0) 'Sum',
+    ->      ROUND(AVG(salary),0) 'Average'
+    ->      FROM employees;
++---------+---------+--------+---------+
+| Maximum | Minimum | Sum    | Average |
++---------+---------+--------+---------+
+|   48000 |    2800 | 196000 |   12250 |
++---------+---------+--------+---------+
+
+
+mysql> SELECT job_id,COUNT(*)
+    -> FROM employees
+    -> GROUP BY job_id;
++------------+----------+
+| job_id     | COUNT(*) |
++------------+----------+
+| AD_PRES    |        1 |
+| AD_VP      |        1 |
+| IT_PROG    |        3 |
+| FI_MGR     |        1 |
+| FI_ACCOUNT |        1 |
+| PU_MAN     |        1 |
+| PU_CLERK   |        2 |
+| ST_MAN     |        1 |
+| SA_REP     |        1 |
+| SH_CLERK   |        1 |
+| AD_ASST    |        1 |
+| HR_REP     |        1 |
+| AC_ACCOUNT |        1 |
++------------+----------+
+
+
+mysql>  SELECT MAX(salary) - MIN(salary) DIFFERENCE
+    -> FROM employees;
++------------+
+| DIFFERENCE |
++------------+
+|      45200 |
++------------+
+
+
+
+mysql> SELECT manager_id,MIN(salary)
+    -> FROM employees
+    -> WHERE manager_id IS NOT NULL
+    -> GROUP BY manager_id
+    -> ORDER BY MIN(salary) DESC;
++------------+-------------+
+| manager_id | MIN(salary) |
++------------+-------------+
+|        102 |       25000 |
+|          0 |       24000 |
+|        108 |        9000 |
+|        205 |        8300 |
+|        100 |        8000 |
+|        145 |        8000 |
+|        103 |        6000 |
+|        101 |        4400 |
+|        114 |        2900 |
+|        123 |        2800 |
++------------+-------------+
+
+
+
+mysql> SELECT department_id, SUM(salary)
+    -> FROM employees
+    -> GROUP BY department_id;
++---------------+-------------+
+| department_id | SUM(salary) |
++---------------+-------------+
+|            90 |       41000 |
+|            60 |       79000 |
+|           100 |       21000 |
+|            30 |       17000 |
+|            50 |       10800 |
+|            80 |        8000 |
+|            10 |        4400 |
+|            40 |        6500 |
+|           110 |        8300 |
++---------------+-------------+
+
+
+
+mysql> SELECT job_id, AVG(salary)
+    -> FROM employees
+    -> WHERE job_id <> 'IT_PROG'
+    -> GROUP BY job_id;
++------------+-------------+
+| job_id     | AVG(salary) |
++------------+-------------+
+| AD_PRES    |       24000 |
+| AD_VP      |       17000 |
+| FI_MGR     |       12000 |
+| FI_ACCOUNT |        9000 |
+| PU_MAN     |       11000 |
+| PU_CLERK   |        3000 |
+| ST_MAN     |        8000 |
+| SA_REP     |        8000 |
+| SH_CLERK   |        2800 |
+| AD_ASST    |        4400 |
+| HR_REP     |        6500 |
+| AC_ACCOUNT |        8300 |
++------------+-------------+
+
+
+
+
+mysql> SELECT job_id,SUM(salary),AVG(salary),MAX(salary),MIN(salary)
+    -> FROM employees
+    -> WHERE department_id = '90'
+    -> GROUP BY job_id;
++---------+-------------+-------------+-------------+-------------+
+| job_id  | SUM(salary) | AVG(salary) | MAX(salary) | MIN(salary) |
++---------+-------------+-------------+-------------+-------------+
+| AD_PRES |       24000 |       24000 |       24000 |       24000 |
+| AD_VP   |       17000 |       17000 |       17000 |       17000 |
++---------+-------------+-------------+-------------+-------------+
+
+
+
+mysql> SELECT job_id, MAX(salary)
+    -> FROM employees
+    -> GROUP BY job_id
+    -> HAVING MAX(salary) >=4000;
++------------+-------------+
+| job_id     | MAX(salary) |
++------------+-------------+
+| AD_PRES    |       24000 |
+| AD_VP      |       17000 |
+| IT_PROG    |       48000 |
+| FI_MGR     |       12000 |
+| FI_ACCOUNT |        9000 |
+| PU_MAN     |       11000 |
+| ST_MAN     |        8000 |
+| SA_REP     |        8000 |
+| AD_ASST    |        4400 |
+| HR_REP     |        6500 |
+| AC_ACCOUNT |        8300 |
++------------+-------------+
+
+
+
+mysql> SELECT department_id, AVG(salary), COUNT(*)
+    -> FROM employees
+    -> GROUP BY department_id
+    -> HAVING COUNT(*) > 10;
+Empty set (0.00 sec)
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,204 @@
+mysql> select * from employees;
++-------------+-------------+-----------+----------+--------------+------------+------------+--------+----------------+------------+---------------+
+| employee_id | first_name  | last_name | email    | phone_number | hire_date  | job_id     | salary | commission_pct | manager_id | department_id |
++-------------+-------------+-----------+----------+--------------+------------+------------+--------+----------------+------------+---------------+
+|         100 | Steven      | King      | @SKING   | 515.123.4567 | 2003-06-17 | AD_PRES    |  24000 |              0 |          0 |            90 |
+|         101 | Dinesh      | Kumar     | @DKUMAR  | 515.123.4568 | 2005-09-21 | AD_VP      |  17000 |              0 |        100 |            90 |
+|         103 | David       | Raj       | @DAVRAJ  | 515.123.4569 | 2001-01-13 | IT_PROG    |  25000 |              0 |        102 |            60 |
+|         104 | Ragu        | Prasad    | @RAGU123 | 515.123.4570 | 2007-02-07 | IT_PROG    |  48000 |              0 |        103 |            60 |
+|         108 | Nancy       | Greenberg | NGREENBE | 515.124.4569 | 1987-06-25 | FI_MGR     |  12000 |              0 |        101 |           100 |
+|         109 | Daniel      | Faviet    | DFAVIET  | 515.124.4169 | 1987-06-26 | FI_ACCOUNT |   9000 |              0 |        108 |           100 |
+|         114 | Den         | Raphaely  | DRAPHAEL | 515.127.4561 | 1987-07-01 | PU_MAN     |  11000 |              0 |        100 |            30 |
+|         115 | Alexander   | khoo      | AKHOO    | 515.127.4562 | 1987-07-02 | PU_CLERK   |   3100 |              0 |        114 |            30 |
+|         116 | Shelli      | Baida     | SBAIDA   | 515.127.4563 | 1987-07-03 | PU_CLERK   |   2900 |              0 |        114 |            30 |
+|         120 | Matthew     | Weiss     | MWEISS   | 650-123-1234 | 1987-07-07 | ST_MAN     |   8000 |              0 |        100 |            50 |
+|         121 | Christopher | Olsen     | COLSEN   | 011.44.1344  | 1987-08-09 | SA_REP     |   8000 |            0.2 |        145 |            80 |
+|         150 | Bruce       | Ernst     | BERNST   | 590.423.4568 | 1987-06-21 | IT_PROG    |   6000 |              0 |        103 |            60 |
+|         195 | Vance       | Jones     | VJONES   | 650.501.4876 | 1987-09-20 | SH_CLERK   |   2800 |              0 |        123 |            50 |
+|         200 | Jennifer    | Scott     | JSCOTT   | 515.123.4444 | 1987-09-25 | AD_ASST    |   4400 |              0 |        101 |            10 |
+|         203 | Susan       | Ford      | SFORD    | 515.123.7777 | 1987-09-28 | HR_REP     |   6500 |              0 |        101 |            40 |
+|         206 | William     | Blake     | WBLAKE   | 515.123.8181 | 1987-10-01 | AC_ACCOUNT |   8300 |              0 |        205 |           110 |
++-------------+-------------+-----------+----------+--------------+------------+------------+--------+----------------+------------+---------------+
+
+mysql> SELECT first_name,last_name,salary
+    -> FROM employees
+    -> WHERE salary  NOT BETWEEN 10000 AND 15000;
++-------------+-----------+--------+
+| first_name  | last_name | salary |
++-------------+-----------+--------+
+| Steven      | King      |  24000 |
+| Dinesh      | Kumar     |  17000 |
+| David       | Raj       |  25000 |
+| Ragu        | Prasad    |  48000 |
+| Daniel      | Faviet    |   9000 |
+| Alexander   | khoo      |   3100 |
+| Shelli      | Baida     |   2900 |
+| Matthew     | Weiss     |   8000 |
+| Christopher | Olsen     |   8000 |
+| Bruce       | Ernst     |   6000 |
+| Vance       | Jones     |   2800 |
+| Jennifer    | Scott     |   4400 |
+| Susan       | Ford      |   6500 |
+| William     | Blake     |   8300 |
++-------------+-----------+--------+
+
+
+
+mysql>
+mysql> SELECT first_name,last_name,department_id
+    -> FROM employees
+    -> WHERE department_id IN (30,100)
+    -> ORDER BY department_id ASC;
++------------+-----------+---------------+
+| first_name | last_name | department_id |
++------------+-----------+---------------+
+| Den        | Raphaely  |            30 |
+| Alexander  | khoo      |            30 |
+| Shelli     | Baida     |            30 |
+| Nancy      | Greenberg |           100 |
+| Daniel     | Faviet    |           100 |
++------------+-----------+---------------+
+
+
+mysql> SELECT first_name,last_name,salary,department_id
+    -> FROM employees
+    -> WHERE salary  NOT BETWEEN 10000 AND 15000
+    -> AND department_id IN (30,100);
++------------+-----------+--------+---------------+
+| first_name | last_name | salary | department_id |
++------------+-----------+--------+---------------+
+| Daniel     | Faviet    |   9000 |           100 |
+| Alexander  | khoo      |   3100 |            30 |
+| Shelli     | Baida     |   2900 |            30 |
++------------+-----------+--------+---------------+
+
+
+
+mysql> SELECT first_name,last_name,hire_date
+    -> FROM employees
+    -> WHERE YEAR(hire_date) LIKE '1987%';
++-------------+-----------+------------+
+| first_name  | last_name | hire_date  |
++-------------+-----------+------------+
+| Nancy       | Greenberg | 1987-06-25 |
+| Daniel      | Faviet    | 1987-06-26 |
+| Den         | Raphaely  | 1987-07-01 |
+| Alexander   | khoo      | 1987-07-02 |
+| Shelli      | Baida     | 1987-07-03 |
+| Matthew     | Weiss     | 1987-07-07 |
+| Christopher | Olsen     | 1987-08-09 |
+| Bruce       | Ernst     | 1987-06-21 |
+| Vance       | Jones     | 1987-09-20 |
+| Jennifer    | Scott     | 1987-09-25 |
+| Susan       | Ford      | 1987-09-28 |
+| William     | Blake     | 1987-10-01 |
++-------------+-----------+------------+
+
+
+mysql> SELECT first_name
+    -> FROM employees
+    -> WHERE first_name LIKE '%b%'
+    -> AND first_name LIKE '%c%';
++------------+
+| first_name |
++------------+
+| Bruce      |
++------------+
+
+
+mysql>  SELECT last_name,job_id,salary
+    -> FROM employees
+    -> WHERE job_id IN ('IT_PROG','SH_CLERK')
+    -> AND salary NOT IN (4500,10000,15000);
++-----------+----------+--------+
+| last_name | job_id   | salary |
++-----------+----------+--------+
+| Raj       | IT_PROG  |  25000 |
+| Prasad    | IT_PROG  |  48000 |
+| Ernst     | IT_PROG  |   6000 |
+| Jones     | SH_CLERK |   2800 |
++-----------+----------+--------+
+
+
+mysql> SELECT last_name
+    -> FROM employees
+    -> WHERE last_name LIKE '______';
++-----------+
+| last_name |
++-----------+
+| Prasad    |
+| Faviet    |
++-----------+
+
+
+
+mysql> SELECT last_name
+    -> FROM employees
+    -> WHERE last_name LIKE '__e%';
++-----------+
+| last_name |
++-----------+
+| Greenberg |
++-----------+
+
+
+mysql> SELECT DISTINCT job_id
+    -> FROM employees
+    -> ;
++------------+
+| job_id     |
++------------+
+| AD_PRES    |
+| AD_VP      |
+| IT_PROG    |
+| FI_MGR     |
+| FI_ACCOUNT |
+| PU_MAN     |
+| PU_CLERK   |
+| ST_MAN     |
+| SA_REP     |
+| SH_CLERK   |
+| AD_ASST    |
+| HR_REP     |
+| AC_ACCOUNT |
++------------+
+
+
+mysql> SELECT first_name,last_name,salary,salary*.15 PF
+    -> FROM employees
+    -> ;
++-------------+-----------+--------+------+
+| first_name  | last_name | salary | PF   |
++-------------+-----------+--------+------+
+| Steven      | King      |  24000 | 3600 |
+| Dinesh      | Kumar     |  17000 | 2550 |
+| David       | Raj       |  25000 | 3750 |
+| Ragu        | Prasad    |  48000 | 7200 |
+| Nancy       | Greenberg |  12000 | 1800 |
+| Daniel      | Faviet    |   9000 | 1350 |
+| Den         | Raphaely  |  11000 | 1650 |
+| Alexander   | khoo      |   3100 |  465 |
+| Shelli      | Baida     |   2900 |  435 |
+| Matthew     | Weiss     |   8000 | 1200 |
+| Christopher | Olsen     |   8000 | 1200 |
+| Bruce       | Ernst     |   6000 |  900 |
+| Vance       | Jones     |   2800 |  420 |
+| Jennifer    | Scott     |   4400 |  660 |
+| Susan       | Ford      |   6500 |  975 |
+| William     | Blake     |   8300 | 1245 |
++-------------+-----------+--------+------+
+
+
+mysql> SELECT *
+    -> FROM employees
+    -> WHERE last_name IN('BLAKE','SCOTT','KING','FORD');
++-------------+------------+-----------+--------+--------------+------------+------------+--------+----------------+------------+---------------+
+| employee_id | first_name | last_name | email  | phone_number | hire_date  | job_id     | salary | commission_pct | manager_id | department_id |
++-------------+------------+-----------+--------+--------------+------------+------------+--------+----------------+------------+---------------+
+|         100 | Steven     | King      | @SKING | 515.123.4567 | 2003-06-17 | AD_PRES    |  24000 |              0 |          0 |            90 |
+|         200 | Jennifer   | Scott     | JSCOTT | 515.123.4444 | 1987-09-25 | AD_ASST    |   4400 |              0 |        101 |            10 |
+|         203 | Susan      | Ford      | SFORD  | 515.123.7777 | 1987-09-28 | HR_REP     |   6500 |              0 |        101 |            40 |
+|         206 | William    | Blake     | WBLAKE | 515.123.8181 | 1987-10-01 | AC_ACCOUNT |   8300 |              0 |        205 |           110 |
++-------------+------------+-----------+--------+--------------+------------+------------+--------+----------------+------------+---------------+
+
+
